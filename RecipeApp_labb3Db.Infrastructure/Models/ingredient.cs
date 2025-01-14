@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RecipeApp_labb3Db.Infrastructure.Models
 {
-    internal class ingredient
+    public class ingredient
     {
         public string Name { get; set; }
         public string Category { get; set; }

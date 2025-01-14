@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="RecipeApp_labb3Db.Presentation.Views.AddNewRecipeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RecipeApp_labb3Db.Presentation.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" d:Background="White" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--Ska visa receptets namn-->
+        
+        
+        
+        <StackPanel Grid.Row="1" Margin="3,0,0,0">
+            <Label Content="Name of recipe:" Margin="-5,0,0,-6" FontWeight="DemiBold"/>
+            <TextBox Text="Placeholder for input of name" 
+         VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,0"
+         Width="120"/>
+            <Label Content="Description of recipe:" Margin="-5,0,0,-3" FontWeight="DemiBold"
+                   HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                   />
+            <TextBox Height="150" Margin="0,-4,0,0"/>
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="3,0,0,0">
+                <Label Content="Added ingridents to recipe:" FontWeight="DemiBold" Margin="-5,0,0,-7"/>
+                <DataGrid Width="200" Height="180" Margin="-18,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" 
+                        Margin="0,20,0,0">
+                <Button Content="Save recipe" Margin="0,0,0,2" Width="80"/>
+                <Button Content="Undo changes" Margin="0,2,0,0" Width="80"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="25,0,3,0">
+            <Label Content="List of ingridients:" FontWeight="DemiBold" Margin="-5,0,0,-6"/>
+            <DataGrid Height="195" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" Margin="25,0,3,0">
+            <Label/>
+            <Label Content="Enter value:" FontWeight="DemiBold" Margin="0,0,0,-6"/>
+            <StackPanel Orientation="Horizontal">
+            <TextBox Text="Fill with amount"/>
+                <ComboBox Text="Units" Margin="4,0,0,0"/>
+            </StackPanel>
+            <Button Content="Add to recipe" Margin="0,4,0,0" Width="80" HorizontalAlignment="Left"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

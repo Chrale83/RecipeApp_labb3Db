@@ -3,10 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RecipeApp_labb3Db"
+        xmlns:local="clr-namespace:RecipeApp_labb3Db" 
+        xmlns:ViewModels="clr-namespace:RecipeApp_labb3Db.Presentation.ViewModels"
+        xmlns:View="clr-namespace:RecipeApp_labb3Db.Presentation.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="510" Width="800">
+    <Window.DataContext>
+        <ViewModels:MainViewModel />
+    </Window.DataContext>
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <View:TopMenuView Margin="2"/>
+        <View:AddNewRecipeView Grid.Row="1" Margin="2"/>
     </Grid>
 </Window>

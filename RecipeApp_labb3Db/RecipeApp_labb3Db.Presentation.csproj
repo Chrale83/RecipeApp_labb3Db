@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\" />
+    <ProjectReference Include="..\RecipeApp_labb3Db.Infrastructure\RecipeApp_labb3Db.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
