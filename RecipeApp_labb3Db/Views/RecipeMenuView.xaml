@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="RecipeApp_labb3Db.Presentation.Views.RecipeMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RecipeApp_labb3Db.Presentation.Views"
+             xmlns:ViewModels="clr-namespace:RecipeApp_labb3Db.Presentation.ViewModels"
+             xmlns:Views="clr-namespace:RecipeApp_labb3Db.Presentation.Views" 
+             d:DataContext="{d:DesignInstance Type=ViewModels:RecipeMenuViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type ViewModels:AddNewRecipeViewModel}">
+            <Views:AddNewRecipeView/>
+
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                    Height="20" Margin="5,0,0,0">
+            <Button Content="All recipes" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Margin="1,0,0,0" Width="80" FontWeight="SemiBold"/>
+            <Button Content="New Recipe" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                    Margin="5,0,5,0" Width="80" FontWeight="SemiBold"/>
+        </StackPanel>
+
+        <ContentControl Grid.Row="1" Content="{Binding AddNewRecipeViewModel}" />
+    </Grid>
+</UserControl>

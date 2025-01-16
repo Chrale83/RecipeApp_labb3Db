@@ -7,16 +7,24 @@
         xmlns:ViewModels="clr-namespace:RecipeApp_labb3Db.Presentation.ViewModels"
         xmlns:View="clr-namespace:RecipeApp_labb3Db.Presentation.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="510" Width="800">
+        Title="MainWindow" Height="530" Width="800">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type ViewModels:RecipeMenuViewModel }">
+            <View:RecipeMenuView/>
+        </DataTemplate>
+
+        
+    </Window.Resources>
     <Window.DataContext>
         <ViewModels:MainViewModel />
     </Window.DataContext>
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <View:TopMenuView Margin="2"/>
-        <View:AddNewRecipeView Grid.Row="1" Margin="2"/>
+
+        <ContentControl Grid.Row="1" Content="{Binding RecipeMenuViewModel}"/>
     </Grid>
 </Window>

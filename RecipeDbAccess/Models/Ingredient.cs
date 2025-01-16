@@ -1,19 +1,18 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace RecipeApp_labb3Db.Infrastructure.Models
+namespace RecipeDbAccess.Models
 {
-    
-    public class Recipe
+    public class Ingredient
     {
         [BsonId]
         [BsonRepresentation(BsonType.String)]
         public ObjectId Id { get; set; }
-
+        [BsonRequired]
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string Category { get; set; }
+        public Unit? Unit { get; set; }
 
         
-        public List<ingredient> ingredients { get; set; } 
     }
 }

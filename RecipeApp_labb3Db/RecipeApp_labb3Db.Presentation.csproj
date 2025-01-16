@@ -9,11 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.2.1" />
+    <None Remove="Resources\units.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RecipeApp_labb3Db.Infrastructure\RecipeApp_labb3Db.Infrastructure.csproj" />
+    <EmbeddedResource Include="Resources\units.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RecipeDbAccess\RecipeDbAccess.csproj" />
   </ItemGroup>
 
 </Project>
