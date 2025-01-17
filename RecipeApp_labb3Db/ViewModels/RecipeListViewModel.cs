@@ -28,6 +28,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             set
             {
                 _selectedRecipe = value;
+                OnPropertyChanged();
             }
         }
 

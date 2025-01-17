@@ -108,8 +108,8 @@
                       IsReadOnly="True"
                       BorderBrush="#CCCCCC"
                         BorderThickness="1"
-RowBackground="#F9F9F9"
-AlternatingRowBackground="#EFEFEF">
+                    RowBackground="#F9F9F9"
+                    AlternatingRowBackground="#EFEFEF">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" 
                                         Binding="{Binding Name}" 
