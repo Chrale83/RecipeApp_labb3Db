@@ -12,8 +12,11 @@
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type ViewModels:AddNewRecipeViewModel}">
             <Views:AddNewRecipeView/>
-
         </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:RecipeListViewModel}">
+            <Views:RecipeListView/>
+        </DataTemplate>
+
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -22,12 +25,22 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
                     Height="20" Margin="5,0,0,0">
-            <Button Content="All recipes" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                    Margin="1,0,0,0" Width="80" FontWeight="SemiBold"/>
-            <Button Content="New Recipe" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
-                    Margin="5,0,5,0" Width="80" FontWeight="SemiBold"/>
+            <Button Content="All recipes"
+                    Command="{Binding ShowRecipeListCommand}"
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Stretch"
+                    Margin="1,0,0,0" 
+                    Width="80" 
+                    FontWeight="SemiBold"/>
+            <Button Content="New Recipe"
+                    Command="{Binding ShowCreateRecipeCommand}"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Stretch" 
+                    Margin="5,0,5,0" 
+                    Width="80" 
+                    FontWeight="SemiBold"/>
         </StackPanel>
 
-        <ContentControl Grid.Row="1" Content="{Binding AddNewRecipeViewModel}" />
+        <ContentControl Grid.Row="1" Content="{Binding SelectedRecipeView}" />
     </Grid>
 </UserControl>

@@ -17,7 +17,8 @@ namespace RecipeDbAccess.DataAccess
         {
             var recipesCollection = ConnectToMongo<Recipe>(RecipeCollection);
             var result = await recipesCollection.FindAsync(_ => true);
-            return result.ToList();
+            var recipes = await result.ToListAsync();
+            return recipes;
         }
 
     }

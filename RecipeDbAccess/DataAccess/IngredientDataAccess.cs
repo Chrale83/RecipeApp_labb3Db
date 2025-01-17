@@ -19,5 +19,11 @@ namespace RecipeDbAccess.DataAccess
             var result = await allIngredients.FindAsync(_ => true);
             return result.ToList();
         }
+
+        public async Task SetAllIngredients(List<Ingredient> ingredients)
+        {
+            var ingredintCollection = ConnectToMongo<Ingredient>(IngredientCollection);
+            await ingredintCollection.InsertManyAsync(ingredients);
+        }
     }
 }

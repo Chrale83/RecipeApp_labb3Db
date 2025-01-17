@@ -11,6 +11,7 @@ namespace RecipeApp_labb3Db.Presentation.Command
     {
         private readonly Action<object> _exectue;
         private readonly Func<object?, bool>? _canExectue;
+        private RelayCommand? showRecipeListCommand;
 
         public event EventHandler? CanExecuteChanged; //Fungerar som propertyChanged
 
@@ -19,6 +20,11 @@ namespace RecipeApp_labb3Db.Presentation.Command
             ArgumentNullException.ThrowIfNull(exectue);
             _exectue = exectue;
             _canExectue = canExectue;
+        }
+
+        public RelayCommand(RelayCommand? showRecipeListCommand)
+        {
+            this.showRecipeListCommand = showRecipeListCommand;
         }
 
         public void RaiseCanExectueChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);

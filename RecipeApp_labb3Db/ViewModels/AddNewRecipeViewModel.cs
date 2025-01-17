@@ -4,15 +4,13 @@ using RecipeDbAccess.DataAccess;
 using RecipeDbAccess.Models;
 using System.Collections.ObjectModel;
 
-
-
-
 namespace RecipeApp_labb3Db.Presentation.ViewModels
 {
     internal class AddNewRecipeViewModel : ViewModelBase
     {
         public RecipeDataAccess recipeDbAccess;
-        private readonly IDialogService dialogService;
+        private readonly DialogService dialogService;
+        public RecipeService recipeService;
 
         private string? _recipeName;
         public string? RecipeName
@@ -22,6 +20,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             {
                 _recipeName = value;
                 OnPropertyChanged();
+                SaveRecipeCommand.RaiseCanExectueChanged();
             }
         }
 
@@ -33,7 +32,8 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             set
             {
                 _recipeDescription = value;
-
+                OnPropertyChanged();
+                SaveRecipeCommand.RaiseCanExectueChanged();
             }
         }
 
@@ -41,7 +41,11 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         public ObservableCollection<Ingredient>? RecipeIngredients
         {
             get => _recipeIngredients;
-            set { _recipeIngredients = value; }
+            set
+            {
+                _recipeIngredients = value;
+                SaveRecipeCommand.RaiseCanExectueChanged();
+            }
         }
 
         private ObservableCollection<Ingredient> _ingredientsCollection;
@@ -100,7 +104,6 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 OnPropertyChanged();
             }
         }
-
         public RelayCommand AddIngredientToRecipeCommand { get; init; }
         public RelayCommand RemoveIngredientFromRecipeCommand { get; init; }
         public RelayCommand SaveRecipeCommand { get; init; }
@@ -108,18 +111,26 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         public AddNewRecipeViewModel()
         {
+            SaveRecipeCommand = new RelayCommand(SaveRecipe, CanSaveRecipe);
+            recipeService = new RecipeService();
             recipeDbAccess = new RecipeDataAccess();
             ingredientDataAccess = new IngredientDataAccess();
-
             RecipeIngredients = new ObservableCollection<Ingredient>();
-
             AddIngredientToRecipeCommand = new RelayCommand(AddIngredientToRecipe);
             RemoveIngredientFromRecipeCommand = new RelayCommand(RemoveIngredientFromRecipe);
-            SaveRecipeCommand = new RelayCommand(SaveRecipe);
             ClearRecipeInputCommand = new RelayCommand(ClearRecipeInput);
             dialogService = new DialogService();
             LoadDataDb();
             loadUnits();
+        }
+
+        private bool CanSaveRecipe(object? arg)
+        {
+            bool isNameEmpty = !string.IsNullOrWhiteSpace(RecipeName);
+            bool isDescriptionEmpty = !string.IsNullOrWhiteSpace(RecipeDescription);
+            bool isIngredientlistEmpty = RecipeIngredients.Any();
+
+            return isNameEmpty && isDescriptionEmpty && isIngredientlistEmpty;
         }
 
         private void loadUnits()
@@ -133,18 +144,26 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         private async void LoadDataDb()
         {
             var ingredients = await ingredientDataAccess.GetAllIngredients();
-            IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
+            if (ingredients.Count != 0)
+            {
+                IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
+            }
+            else
+            {
+                var unitService = new UnitJsonService();
+                ingredients = unitService.LoadIngredient();
+                await ingredientDataAccess.SetAllIngredients(ingredients);
+                IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
+                OnPropertyChanged(nameof(IngredientsCollection));
+            }
         }
-
         private void ClearRecipeInput(object obj)
         {
             bool ConfirmUndo = dialogService.ShowConfirmationDialog("You want to clear all inputed information", "Confirm");
             if (ConfirmUndo)
             {
-                RecipeIngredients = new ObservableCollection<Ingredient>();
-                RecipeDescription = string.Empty;
-                RecipeName = string.Empty;
-                OnPropertyChanged(nameof(RecipeDescription));
+                ClearRecipeInput();
+                ClearIngredientInput();
             }
         }
 
@@ -153,58 +172,44 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             bool confirmSave = dialogService.ShowConfirmationDialog("Do you want to save the recipe?", "Confirm");
             if (confirmSave)
             {
-                var recipe = new Recipe
-                {
-                    Name = RecipeName,
-                    Description = RecipeDescription,
-                    Ingredients = RecipeIngredients.ToList()
-
-                };
-
-                await recipeDbAccess.CreateRecipe(recipe);
-
-                RecipeName = string.Empty;
-                RecipeDescription = string.Empty;
-                RecipeIngredients = new ObservableCollection<Ingredient>();
+                await recipeService.SaveRecipe(RecipeName, RecipeDescription, RecipeIngredients);
+                ClearRecipeInput();
             }
-
         }
 
         private void RemoveIngredientFromRecipe(object obj)
         {
-            if (RecipeIngredients is null) return;
-
-            RecipeIngredients.Remove(SelectedRecipeIngredient);
-
+            if (RecipeIngredients != null)
+            {
+                RecipeIngredients.Remove(SelectedRecipeIngredient);
+                SaveRecipeCommand.RaiseCanExectueChanged();
+            }
         }
 
         private void AddIngredientToRecipe(object obj)
         {
             if (SelectedIngredient != null)
             {
-
-                var newIngredient = new Ingredient
-                {
-                    Name = SelectedIngredient.Name,
-                    Category = SelectedIngredient.Category,
-
-                    Unit = new Unit
-                    {
-                        UnitName = SelectedUnit.UnitName,
-                        Amount = SelectedAmount
-
-                    }
-                };
-
+                var newIngredient = recipeService.AddIngredientToRecipe(SelectedIngredient.Name, SelectedIngredient.Category, SelectedUnit.UnitName, SelectedAmount);
                 RecipeIngredients.Add(newIngredient);
-
-                SelectedIngredient = null;
-                SelectedUnit = null;
-                SelectedAmount = 0;
+                ClearIngredientInput();
+                OnPropertyChanged(nameof(RecipeIngredients));
+                SaveRecipeCommand.RaiseCanExectueChanged();
             }
-
-
+        }
+        private void ClearRecipeInput()
+        {
+            RecipeName = string.Empty;
+            RecipeDescription = string.Empty;
+            RecipeIngredients = new ObservableCollection<Ingredient>();
+            //OnPropertyChanged(nameof(RecipeDescription));
         }
 
+        private void ClearIngredientInput()
+        {
+            SelectedIngredient = null;
+            SelectedUnit = null;
+            SelectedAmount = 0;
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System.Text.RegularExpressions;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Text.RegularExpressions;
 
 namespace RecipeApp_labb3Db.Presentation.Views
 {
@@ -12,6 +15,11 @@ namespace RecipeApp_labb3Db.Presentation.Views
             InitializeComponent();
         }
 
-       
+        private void isnumeric(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
     }
 }
+

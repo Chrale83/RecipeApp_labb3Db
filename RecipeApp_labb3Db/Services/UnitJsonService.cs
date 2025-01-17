@@ -37,7 +37,22 @@ namespace RecipeApp_labb3Db.Presentation.Services
             }
             else
             {
-                throw new FileNotFoundException("The units file was not found.", filePath);
+                throw new FileNotFoundException("Filen hittades inte (enheter)", filePath);
+            }
+        }
+
+        public List<Ingredient> LoadIngredient()
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources", "Ingredients.json");
+            if (File.Exists(filePath))
+            {
+                var json = File.ReadAllText(filePath);
+                var ingredients = JsonSerializer.Deserialize<List<Ingredient>>(json);
+                return new List<Ingredient>(ingredients);
+            }
+            else
+            {
+                throw new FileNotFoundException("Filen hittades inte (ingredienser)", filePath);
             }
         }
 

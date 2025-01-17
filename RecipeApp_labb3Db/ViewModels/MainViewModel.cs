@@ -28,22 +28,12 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             RecipeMenuViewModel = new RecipeMenuViewModel();
             SelectedView = RecipeMenuViewModel;
             IngredientDataAccess = new IngredientDataAccess();
-            CreateIngredient();
+            
 
         }
 
         public IngredientDataAccess IngredientDataAccess;
 
-        private async void CreateIngredient()
-        {
-
-            var ingredient = new Ingredient
-            {
-                Name = "Torsk",
-                Category = "Fisk"
-            };
-
-            await IngredientDataAccess.CreateIngredient(ingredient);  
-        }
+        
     }
 }
