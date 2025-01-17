@@ -47,14 +47,18 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Margin="3,0,0,0">
+            <StackPanel Margin="0,0,0,0">
                 <Label Content="Added ingridents to recipe:" 
                        FontWeight="DemiBold" 
-                       Margin="-5,0,0,-7"/>
+                       Margin="0,0,0,-7"/>
                 <DataGrid ItemsSource="{Binding RecipeIngredients}" 
                           SelectedItem="{Binding SelectedRecipeIngredient}"
                           AutoGenerateColumns="False"
-                          Width="200" Height="180" Margin="-18,0,0,0">
+                          BorderBrush="#CCCCCC"
+                          BorderThickness="1"
+                          RowBackground="#F9F9F9"
+                          AlternatingRowBackground="#EFEFEF"
+                          Width="195" Height="180" Margin="0,0,20,0">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Name" 
                                             Width="*" 
@@ -65,7 +69,7 @@
                                             IsReadOnly="False" 
                                             Binding="{Binding Unit.Amount}"/>
                         <DataGridTextColumn Header="Unit" 
-                                            Width="62" 
+                                            Width="35" 
                                             IsReadOnly="True" 
                                             Binding="{Binding Unit.UnitName}"/>
                     </DataGrid.Columns>
@@ -101,7 +105,11 @@
                       SelectedItem="{Binding SelectedIngredient}"
                       Height="188" Width="240"
                       AutoGenerateColumns="False"
-                      IsReadOnly="True">
+                      IsReadOnly="True"
+                      BorderBrush="#CCCCCC"
+                        BorderThickness="1"
+RowBackground="#F9F9F9"
+AlternatingRowBackground="#EFEFEF">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" 
                                         Binding="{Binding Name}" 

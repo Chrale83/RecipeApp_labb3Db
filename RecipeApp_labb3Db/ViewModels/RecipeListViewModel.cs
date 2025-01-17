@@ -17,8 +17,20 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         public RecipeListViewModel()
         {
-            
+
         }
+
+        private Recipe _selectedRecipe;
+
+        public Recipe SelectedRecipe
+        {
+            get => _selectedRecipe;
+            set
+            {
+                _selectedRecipe = value;
+            }
+        }
+
         public async Task GetAllRecipes()
         {
             RecipeDataAccess = new RecipeDataAccess();
