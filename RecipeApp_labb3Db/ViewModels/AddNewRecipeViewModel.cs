@@ -68,6 +68,8 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             {
                 _selectedIngredient = value;
                 OnPropertyChanged();
+                AddIngredientToRecipeCommand.RaiseCanExectueChanged();
+
             }
         }
         private Ingredient _selectedRecipeIngredient;
@@ -90,7 +92,11 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         public Unit SelectedUnit
         {
             get => _selectedUnit;
-            set { _selectedUnit = value; }
+            set
+            {
+                _selectedUnit = value;
+                AddIngredientToRecipeCommand.RaiseCanExectueChanged();
+            }
         }
 
         private double _selectedAmount;
@@ -102,6 +108,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             {
                 _selectedAmount = value;
                 OnPropertyChanged();
+                AddIngredientToRecipeCommand.RaiseCanExectueChanged();
             }
         }
         public RelayCommand AddIngredientToRecipeCommand { get; init; }
@@ -116,12 +123,20 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             recipeDbAccess = new RecipeDataAccess();
             ingredientDataAccess = new IngredientDataAccess();
             RecipeIngredients = new ObservableCollection<Ingredient>();
-            AddIngredientToRecipeCommand = new RelayCommand(AddIngredientToRecipe);
+            AddIngredientToRecipeCommand = new RelayCommand(AddIngredientToRecipe, CanAddIngredientToRecipe);
             RemoveIngredientFromRecipeCommand = new RelayCommand(RemoveIngredientFromRecipe);
             ClearRecipeInputCommand = new RelayCommand(ClearRecipeInput);
             dialogService = new DialogService();
             LoadDataDb();
             loadUnits();
+        }
+
+        private bool CanAddIngredientToRecipe(object? arg)
+        {
+            bool isIngredientSelected = SelectedIngredient != null;
+            bool isAmountSelected = SelectedAmount != null;
+            bool isUnitSelected = SelectedUnit != null;
+            return isIngredientSelected && isAmountSelected && isUnitSelected;
         }
 
         private bool CanSaveRecipe(object? arg)
@@ -208,7 +223,6 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         private void ClearIngredientInput()
         {
             SelectedIngredient = null;
-            SelectedUnit = null;
             SelectedAmount = 0;
         }
     }

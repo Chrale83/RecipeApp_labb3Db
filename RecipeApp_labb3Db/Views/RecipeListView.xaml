@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" d:Background= "White">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <StackPanel>
             <ListView 
                   ItemsSource="{Binding Recipes}" 
@@ -15,8 +19,9 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <TextBlock Text="Recipe Name" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Name}"/>
+                            
+                            <TextBlock Text="{Binding Name}" Background="LightSkyBlue" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Description}" FontWeight="Light" Background="AliceBlue"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

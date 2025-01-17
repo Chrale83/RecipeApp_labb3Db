@@ -1,14 +1,14 @@
 [
-    "miligram",
-    "gram",
-    "hektogram",
-    "kilogram",
-    "mililiter",
-    "centiliter",
-    "deciliter",
-    "liter",
-    "kyddmått",
-    "tesked",
-    "matsked"
+    "mg",
+    "g",
+    "hg",
+    "kg",
+    "ml",
+    "l",
+    "dl",
+    "l",
+    "krm",
+    "tsk",
+    "msk"
 
 ]
