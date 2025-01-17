@@ -1,4 +1,6 @@
-﻿using RecipeApp_labb3Db.Presentation.Command;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using RecipeApp_labb3Db.Presentation.Command;
+using RecipeApp_labb3Db.Presentation.Messages;
 
 namespace RecipeApp_labb3Db.Presentation.ViewModels
 {
@@ -28,8 +30,9 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             ShowRecipeListCommand = new RelayCommand(ShowRecipeListView);
         }
 
-        private void ShowRecipeListView(object obj)
+        private async void ShowRecipeListView(object obj)
         {
+            await RecipeListViewModel.GetAllRecipes();
             SelectedRecipeView = RecipeListViewModel;
         }
 

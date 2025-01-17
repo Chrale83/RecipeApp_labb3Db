@@ -134,7 +134,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         private bool CanAddIngredientToRecipe(object? arg)
         {
             bool isIngredientSelected = SelectedIngredient != null;
-            bool isAmountSelected = SelectedAmount != null;
+            bool isAmountSelected = SelectedAmount > 0;
             bool isUnitSelected = SelectedUnit != null;
             return isIngredientSelected && isAmountSelected && isUnitSelected;
         }
