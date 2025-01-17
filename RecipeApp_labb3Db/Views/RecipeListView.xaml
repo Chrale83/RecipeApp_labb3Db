@@ -14,20 +14,34 @@
         <StackPanel>
             <ListView 
                   ItemsSource="{Binding Recipes}" 
-                  
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                  Height="400"
+                  >
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
-                            
-                            <TextBlock Text="{Binding Name}" Background="LightSkyBlue" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Description}" FontWeight="Light" Background="AliceBlue"/>
+                        <StackPanel Margin="5">
+
+                            <TextBlock 
+                    Text="{Binding Name}" 
+                    Background="#F0F0F0" 
+                    FontWeight="Bold" 
+                    Foreground="#333333" 
+                    Padding="5" 
+                    FontSize="14" />
+                            <TextBlock 
+                    Text="{Binding Description}" 
+                    Background="#FFFFFF" 
+                    Foreground="#555555" 
+                    Padding="5" 
+                    FontWeight="Normal" 
+                    FontSize="12"
+                    TextWrapping="Wrap"
+                                MaxWidth="225"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Label Content="{Binding TestString}"/>
+           
         </StackPanel>
     </Grid>
 </UserControl>
