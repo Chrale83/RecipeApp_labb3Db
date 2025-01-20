@@ -156,7 +156,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         }
 
         public IngredientDataAccess ingredientDataAccess;
-        private async void LoadDataDb()
+        private async Task LoadDataDb()
         {
             var ingredients = await ingredientDataAccess.GetAllIngredients();
             if (ingredients.Count != 0)

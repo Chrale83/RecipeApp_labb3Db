@@ -3,13 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:RecipeApp_labb3Db.Presentation.Views"
+             xmlns:local="clr-namespace:RecipeApp_labb3Db.Presentation.Views" 
+             xmlns:viewmodels="clr-namespace:RecipeApp_labb3Db.Presentation.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:TopMenuViewModel}"
+             xmlns:View="clr-namespace:RecipeApp_labb3Db.Presentation.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:RecipeMenuViewModel}">
+            <View:RecipeMenuView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:AddNewIngredientViewModel}">
+            <View:AddNewIngredientView/>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
         <StackPanel Orientation="Horizontal" Height="30">
-            <Button Content="Recipes" Width="80" Margin="3" FontWeight="SemiBold"/>
-            <Button Content="Ingredients" Width="80" Margin="3" FontWeight="SemiBold"/>
+            <Button Content="Ingredients" 
+                    Command="{Binding DataContext.SwapToIngredientViewCommand, 
+                RelativeSource={RelativeSource AncestorType=Window} }" 
+                    Width="80" Margin="3" FontWeight="SemiBold"/>
+            <Button Content="Recipes" 
+                    Command="{Binding DataContext.SwapToRecipeViewCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                    Width="80" Margin="3" FontWeight="SemiBold"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -1,6 +1,6 @@
-﻿using RecipeDbAccess.DataAccess;
-
-using RecipeDbAccess.Models;
+﻿
+using RecipeApp_labb3Db.Presentation.Command;
+using RecipeDbAccess.DataAccess;
 
 namespace RecipeApp_labb3Db.Presentation.ViewModels
 {
@@ -8,6 +8,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
     {
         public TopMenuViewModel TopMenuViewModel { get; }
         public RecipeMenuViewModel RecipeMenuViewModel { get; }
+        public AddNewIngredientViewModel AddNewIngredientViewModel { get; }
 
         private ViewModelBase _SelectedView;
 
@@ -20,20 +21,35 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 OnPropertyChanged();
             }
         }
-
-
+        
+        public RelayCommand SwapToRecipeViewCommand { get; }
+        public RelayCommand SwapToIngredientViewCommand { get; }
         public MainViewModel()
         {
             TopMenuViewModel = new TopMenuViewModel();
             RecipeMenuViewModel = new RecipeMenuViewModel();
+            AddNewIngredientViewModel = new AddNewIngredientViewModel();
             SelectedView = RecipeMenuViewModel;
-            IngredientDataAccess = new IngredientDataAccess();
-            
+            SwapToIngredientViewCommand = new RelayCommand(SwapToIngredientView);
+            SwapToRecipeViewCommand = new RelayCommand(SwapToRecipeView);
+        }
+
+        private void SwapToRecipeView(object? arg)
+        {
+            SelectedView = RecipeMenuViewModel;
+        }
+
+        private async void SwapToIngredientView(object? arg)
+        {
+            await GetAllIngredients();
+            SelectedView = AddNewIngredientViewModel;
+        }
+
+        public async Task GetAllIngredients()
+        {
+            await AddNewIngredientViewModel.GetAllIngredients();
 
         }
 
-        public IngredientDataAccess IngredientDataAccess;
-
-        
     }
 }

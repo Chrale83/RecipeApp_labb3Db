@@ -4,10 +4,15 @@ namespace RecipeApp_labb3Db.Presentation.Services
 {
     public class DialogService
     {
-        public bool ShowConfirmationDialog(string message, string title)
+        public static bool ShowConfirmationDialog(string message, string title)
         {
-            var result = MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Information);
             return result == MessageBoxResult.Yes;
+        }
+
+        public void ShowErrorDialog(string message, string title)
+        {
+            var result = MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 }

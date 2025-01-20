@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using RecipeDbAccess.Models;
+using System.Diagnostics;
 
 namespace RecipeDbAccess.DataAccess
 {
@@ -18,6 +20,37 @@ namespace RecipeDbAccess.DataAccess
             var allIngredients = ConnectToMongo<Ingredient>(IngredientCollection);
             var result = await allIngredients.FindAsync(_ => true);
             return result.ToList();
+        }
+
+        public async Task GetAndSetIngredient(Ingredient selectedIngredient)
+        {
+            try
+            {
+                var allIngredients = ConnectToMongo<Ingredient>(IngredientCollection);
+
+                bool exists = await allIngredients.Find(_ => _.Name == selectedIngredient.Name).AnyAsync();
+
+                if (!exists)
+                {
+                    var newIngredient = new Ingredient
+                    {
+                        Name = selectedIngredient.Name,
+                        Category = selectedIngredient.Category,
+                    };
+                    await CreateIngredient(newIngredient);
+                }
+                else
+                {
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+     
         }
 
         public async Task SetAllIngredients(List<Ingredient> ingredients)

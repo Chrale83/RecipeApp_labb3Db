@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="RecipeApp_labb3Db.Presentation.Views.AddNewIngredientView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RecipeApp_labb3Db.Presentation.Views" xmlns:viewmodels="clr-namespace:RecipeApp_labb3Db.Presentation.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:AddNewIngredientViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <DataGrid ItemsSource="{Binding Ingredients}"
+                  DisplayMemberPath="Name"
+                  AutoGenerateColumns="False"
+                  Width="300"
+                  Margin="0,5,0,0"
+                  HorizontalAlignment="Left"
+                  SelectedItem="{Binding SelectedIngredient}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Ingredient Name"
+                                    Width="200"
+                                    Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Category"
+                                    Width="75"
+                                    Binding="{Binding Category}"
+                                    />
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Left">
+            <Label Content="Selected ingredient" 
+                   FontWeight="DemiBold"/>
+            <TextBox Text="{Binding IngredientName, 
+                UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                     Width="170"/>
+            <Label Content="Ingredient category" 
+                   FontWeight="DemiBold"/>
+            <TextBox Text="{Binding IngredientCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Width="170"/>
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                <Button Content="Save ingredient" Margin="0,0,4,0"
+                        Command="{Binding SaveIngredientCommand}"/>
+                
+                <Button Content="Undo changes" 
+                        Command="{Binding RemoveInputCommand}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

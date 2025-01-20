@@ -26,7 +26,6 @@
             </ListView.ItemTemplate>
         </ListView>
 
-
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -52,12 +51,9 @@
           Background="White"
           BorderThickness="3">
                 <DataGrid.Columns>
-                    <!-- Ingredient Name -->
                     <DataGridTextColumn  
                 Binding="{Binding Name}" 
                 Width="*" />
-
-                    <!-- Amount and UnitName Combined -->
                     <DataGridTemplateColumn Width="50">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -70,9 +66,6 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
         </Grid>
-
-
     </Grid>
 </UserControl>
