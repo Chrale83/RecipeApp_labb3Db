@@ -1,4 +1,5 @@
-﻿using RecipeDbAccess.DataAccess;
+﻿using RecipeApp_labb3Db.Presentation.Services;
+using RecipeDbAccess.DataAccess;
 using RecipeDbAccess.Models;
 using System.Collections.ObjectModel;
 
@@ -15,11 +16,6 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             set { _recipes = value; }
         }
 
-        public RecipeListViewModel()
-        {
-
-        }
-
         private Recipe _selectedRecipe;
 
         public Recipe SelectedRecipe
@@ -32,10 +28,20 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             }
         }
 
+        
+
+
         public async Task GetAllRecipes()
         {
-            RecipeDataAccess = new RecipeDataAccess();
-            Recipes = new ObservableCollection<Recipe>(await RecipeDataAccess.GetAllRecipes());
+            try
+            {
+                RecipeDataAccess = new RecipeDataAccess();
+                Recipes = new ObservableCollection<Recipe>(await RecipeDataAccess.GetAllRecipes());
+            }
+            catch (Exception e)
+            {
+                DialogService.ShowConfirmationDialog($"Fel inträffande {e.Message}", "Fel vid databas");
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             SelectedView = RecipeMenuViewModel;
         }
 
-        public async void SwapToIngredientView(object? arg)
+        public void SwapToIngredientView(object? arg)
         {
             
             SelectedView = AddNewIngredientViewModel;

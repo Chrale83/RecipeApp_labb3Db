@@ -9,7 +9,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
     internal class AddNewRecipeViewModel : ViewModelBase
     {
         public RecipeDataAccess recipeDbAccess;
-        private readonly DialogService dialogService;
+
         public RecipeService recipeService;
 
         private string? _recipeName;
@@ -21,6 +21,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 _recipeName = value;
                 OnPropertyChanged();
                 SaveRecipeCommand.RaiseCanExectueChanged();
+
             }
         }
 
@@ -126,7 +127,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             AddIngredientToRecipeCommand = new RelayCommand(AddIngredientToRecipe, CanAddIngredientToRecipe);
             RemoveIngredientFromRecipeCommand = new RelayCommand(RemoveIngredientFromRecipe);
             ClearRecipeInputCommand = new RelayCommand(ClearRecipeInput);
-            dialogService = new DialogService();
+
             LoadDataDb();
             loadUnits();
         }
@@ -158,23 +159,32 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         public IngredientDataAccess ingredientDataAccess;
         private async Task LoadDataDb()
         {
-            var ingredients = await ingredientDataAccess.GetAllIngredients();
-            if (ingredients.Count != 0)
+            try
             {
-                IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
+                var ingredients = await ingredientDataAccess.GetAllIngredientsFromDb();
+                if (ingredients.Count != 0)
+                {
+                    IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
+                }
+                else
+                {
+                    var unitService = new UnitJsonService();
+                    ingredients = unitService.LoadIngredient();
+                    await ingredientDataAccess.SetAllIngredientsToDB(ingredients);
+                    IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
+                    OnPropertyChanged(nameof(IngredientsCollection));
+                }
+
             }
-            else
+            catch (Exception e)
             {
-                var unitService = new UnitJsonService();
-                ingredients = unitService.LoadIngredient();
-                await ingredientDataAccess.SetAllIngredients(ingredients);
-                IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
-                OnPropertyChanged(nameof(IngredientsCollection));
+
+                DialogService.ShowConfirmationDialog($"Fel vid databas {e.Message}", "fel vid databas");
             }
         }
         private void ClearRecipeInput(object obj)
         {
-            bool ConfirmUndo = dialogService.ShowConfirmationDialog("You want to clear all inputed information", "Confirm");
+            bool ConfirmUndo = DialogService.ShowQuestionDialog("You want to clear all inputed information", "Confirm");
             if (ConfirmUndo)
             {
                 ClearRecipeInput();
@@ -184,7 +194,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         private async void SaveRecipe(object obj)
         {
-            bool confirmSave = dialogService.ShowConfirmationDialog("Do you want to save the recipe?", "Confirm");
+            bool confirmSave = DialogService.ShowQuestionDialog("Do you want to save the recipe?", "Confirm");
             if (confirmSave)
             {
                 await recipeService.SaveRecipe(RecipeName, RecipeDescription, RecipeIngredients);
@@ -206,7 +216,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             if (SelectedIngredient != null)
             {
                 var newIngredient = recipeService.AddIngredientToRecipe(SelectedIngredient.Name, SelectedIngredient.Category, SelectedUnit.UnitName, SelectedAmount);
-                RecipeIngredients.Add(newIngredient);
+                RecipeIngredients?.Add(newIngredient);
                 ClearIngredientInput();
                 OnPropertyChanged(nameof(RecipeIngredients));
                 SaveRecipeCommand.RaiseCanExectueChanged();

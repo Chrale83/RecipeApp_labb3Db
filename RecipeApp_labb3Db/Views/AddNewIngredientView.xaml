@@ -6,6 +6,14 @@
              xmlns:local="clr-namespace:RecipeApp_labb3Db.Presentation.Views" xmlns:viewmodels="clr-namespace:RecipeApp_labb3Db.Presentation.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:AddNewIngredientViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" d:Background="White">
+    <UserControl.Resources>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="82"/>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -40,12 +48,52 @@
             <TextBox Text="{Binding IngredientCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Width="170"/>
             <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                <Button Content="Save ingredient" Margin="0,0,4,0"
-                        Command="{Binding SaveIngredientCommand}"/>
-                
-                <Button Content="Undo changes" 
-                        Command="{Binding RemoveInputCommand}"/>
+                <Button Margin="0,0,4,0"
+                        Command="{Binding SaveIngredientCommand}"
+                        Style="{StaticResource ButtonStyle}">
+                    <Button.Content>
+                    <TextBlock Text="    Save&#10;Ingredient" 
+                               TextWrapping="Wrap"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                    </Button.Content>
+                </Button>
+
+                <Button  
+                        Command="{Binding RemoveInputCommand}"
+                    Style="{StaticResource ButtonStyle}">
+                    <Button.Content>
+                    <TextBlock Text="Undo&#10;input" TextWrapping="Wrap"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               />
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" 
+                        Margin="0,5,0,0">
+                <Button 
+                        Margin="0,0,4,0"
+                        Style="{StaticResource ButtonStyle}"
+            Command="{Binding DeleteIngredientCommand}">
+                    <Button.Content>
+                        <TextBlock Text="   Delete&#10;Ingredient" TextWrapping="Wrap"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Button.Content>
+                </Button>
+
+                <Button  Command="{Binding UpdateIngredientCommand}"
+                         Style="{StaticResource ButtonStyle}" >
+                    <Button.Content>
+                        <TextBlock Text="  Update&#10;Ingredient" TextWrapping="Wrap"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Button.Content>
+                </Button>
             </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>
+                            
+
