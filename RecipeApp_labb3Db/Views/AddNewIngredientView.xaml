@@ -16,20 +16,20 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <DataGrid ItemsSource="{Binding Ingredients}"
                   DisplayMemberPath="Name"
                   AutoGenerateColumns="False"
-                  Width="300"
+                  Width="240.2"
                   Margin="0,5,0,0"
                   HorizontalAlignment="Left"
                   SelectedItem="{Binding SelectedIngredient}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Ingredient Name"
-                                    Width="200"
+                                    Width="140"
                                     Binding="{Binding Name}"/>
                 <DataGridTextColumn Header="Category"
                                     Width="75"
@@ -37,13 +37,14 @@
                                     />
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Column="1" HorizontalAlignment="Left">
-            <Label Content="Selected ingredient" 
+        <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="40,0,0,0">
+            <Label Content="Selected ingredient"
+                   Margin="-4,0,0,-4"
                    FontWeight="DemiBold"/>
             <TextBox Text="{Binding IngredientName, 
                 UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                      Width="170"/>
-            <Label Content="Ingredient category" 
+            <Label Content="Ingredient category" Margin="-4,0,0,-4"
                    FontWeight="DemiBold"/>
             <TextBox Text="{Binding IngredientCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                      Width="170"/>
