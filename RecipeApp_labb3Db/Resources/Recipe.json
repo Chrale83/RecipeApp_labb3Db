@@ -1,0 +1,47 @@
+[
+{
+ 
+  "Name": "Toast Skagen",
+  "Description": " Skala räkorna. Blanda majonnäs och gräddfil och vänd ner räkor, dill, rom och citronskal (endast det gula). Smaka av med citronsaft och peppar.\r\n\r\n Skär bort kanterna från brödet och stek i smör till fin färg. \r\n\r\n Fördela skagenröran på bröden och toppa med rom, lök och dill. Servera med citronskivor.",
+  "Ingredients": [
+    {
+      "_id": "000000000000000000000000",
+      "Name": "Räkor",
+      "Category": "Skaldjur",
+      "Unit": {
+        "UnitName": "g",
+        "Amount": 400
+      }
+    },
+    {
+      "_id": "000000000000000000000000",
+      "Name": "Majonäs",
+      "Category": "Sås",
+      "Unit": {
+        "UnitName": "dl",
+        "Amount": 1
+      }
+    },
+    {
+      "_id": "000000000000000000000000",
+      "Name": "Dill",
+      "Category": "Ört",
+      "Unit": {
+        "UnitName": "msk",
+        "Amount": 1
+      }
+
+    
+    },
+    {
+      "_id": "000000000000000000000000",
+      "Name": "Rödlök",
+      "Category": "Ört",
+      "Unit": {
+        "UnitName": "msk",
+        "Amount": 1
+      }
+
+    }
+  ]
+}]

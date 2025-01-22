@@ -10,11 +10,15 @@
 
   <ItemGroup>
     <None Remove="Resources\Ingredients.json" />
+    <None Remove="Resources\Recipe.json" />
     <None Remove="Resources\units.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Ingredients.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Recipe.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\units.json">

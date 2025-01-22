@@ -45,6 +45,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             set
             {
                 _recipeIngredients = value;
+                OnPropertyChanged();
                 SaveRecipeCommand.RaiseCanExectueChanged();
             }
         }
@@ -127,9 +128,8 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             AddIngredientToRecipeCommand = new RelayCommand(AddIngredientToRecipe, CanAddIngredientToRecipe);
             RemoveIngredientFromRecipeCommand = new RelayCommand(RemoveIngredientFromRecipe);
             ClearRecipeInputCommand = new RelayCommand(ClearRecipeInput);
-
-            LoadDataDb();
             loadUnits();
+            _ = LoadDataStartup();
         }
 
         private bool CanAddIngredientToRecipe(object? arg)
@@ -151,13 +151,13 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         private void loadUnits()
         {
-            var unitService = new UnitJsonService();
+            var unitService = new JsonService();
             var result = unitService.LoadUnits();
             Units = new ObservableCollection<Unit>(result);
         }
 
         public IngredientDataAccess ingredientDataAccess;
-        private async Task LoadDataDb()
+        private async Task LoadDataStartup()
         {
             try
             {
@@ -168,7 +168,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 }
                 else
                 {
-                    var unitService = new UnitJsonService();
+                    var unitService = new JsonService();
                     ingredients = unitService.LoadIngredient();
                     await ingredientDataAccess.SetAllIngredientsToDB(ingredients);
                     IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
@@ -181,6 +181,11 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
                 DialogService.ShowConfirmationDialog($"Fel vid databas {e.Message}", "fel vid databas");
             }
+        }
+
+        public async Task GetAllIngredients()
+        {
+            IngredientsCollection = new ObservableCollection<Ingredient>( await ingredientDataAccess.GetAllIngredientsFromDb());
         }
         private void ClearRecipeInput(object obj)
         {

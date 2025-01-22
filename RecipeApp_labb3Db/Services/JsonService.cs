@@ -6,21 +6,9 @@ using System.Text.Json;
 
 namespace RecipeApp_labb3Db.Presentation.Services
 {
-    public class UnitJsonService
+    public class JsonService
     {
-        //public List<Unit> LoadUnits()
-        //{
-        //    var assembly = Assembly.GetExecutingAssembly();
-        //    var resourceName = "RecipeApp_labb3Db.Presentation.Resources";
-
-        //    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-        //    using (StreamReader reader = new StreamReader(stream))
-        //    {
-        //        var json = reader.ReadToEnd();
-        //        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Unit>>(json);
-
-        //    }
-        //}
+        
 
         public List<Unit> LoadUnits()
         {
@@ -52,7 +40,22 @@ namespace RecipeApp_labb3Db.Presentation.Services
             }
             else
             {
-                throw new FileNotFoundException("Filen hittades inte (ingredienser)", filePath);
+                throw new FileNotFoundException("Filen hittades inte ", filePath);
+            }
+        }
+
+        public List<Recipe> LoadDemoRecipe()
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources", "Recipe.json");
+            if (File.Exists(filePath))
+            {
+                var json = File.ReadAllText(filePath);
+                var recipe = JsonSerializer.Deserialize<List<Recipe>>(json);
+                return new List<Recipe>(recipe);
+            }
+            else
+            {
+                throw new FileNotFoundException("Filen hittades inte", filePath);
             }
         }
 

@@ -34,8 +34,9 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             SwapToRecipeViewCommand = new RelayCommand(SwapToRecipeView);
         }
 
-        private void SwapToRecipeView(object? arg)
+        private async void SwapToRecipeView(object? arg)
         {
+            await RecipeMenuViewModel.AddNewRecipeViewModel.GetAllIngredients();
             SelectedView = RecipeMenuViewModel;
         }
 

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using RecipeDbAccess.Models;
 
 namespace RecipeDbAccess.DataAccess
@@ -21,7 +22,11 @@ namespace RecipeDbAccess.DataAccess
             }
         }
 
-
+        public async Task DeleteRecipeFromDb(Recipe recipe)
+        {
+            var recipeCollection = ConnectToMongo<Recipe>(RecipeCollection);
+            await recipeCollection.DeleteOneAsync(r => r.Id == recipe.Id);
+        }
         public async Task<List<Recipe>> GetAllRecipes()
         {
             try

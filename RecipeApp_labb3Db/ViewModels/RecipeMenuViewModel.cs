@@ -36,6 +36,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         private void showCreateRecipeView(object obj)
         {
+            
             SelectedRecipeView = AddNewRecipeViewModel;
         }
 

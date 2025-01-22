@@ -22,7 +22,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         public ObservableCollection<Ingredient> Ingredients
         {
             get => _ingredients;
-            set { _ingredients = value; }
+            set { _ingredients = value; OnPropertyChanged(); }
         }
 
         private Ingredient? _selectedIngredient;
@@ -90,7 +90,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         {
             bool isIngredientNameValid = IngredientName != string.Empty;
             bool isCategoryEmpty = IngredientCategory != string.Empty;
-            return SelectedIngredient != null;
+            return SelectedIngredient != null && isIngredientNameValid && isCategoryEmpty;
         }
 
         private async void UpdateIngredient(object obj)
@@ -104,9 +104,6 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             }
         }
                 
-
-
-
         private bool CanDeleteIngredient(object? arg)
         {
             bool isNameInputed = !string.IsNullOrWhiteSpace(IngredientName);
@@ -125,7 +122,6 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 await GetAllIngredients();
             }
         }
-
 
         private bool CanSaveIngredient(object? arg)
         {
@@ -146,6 +142,12 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 if (result)
                 {
                     DialogService.ShowConfirmationDialog($"{temptIng.Name} added to ingredients", "added ingredients succesfull");
+                    await GetAllIngredients();
+                    //OnPropertyChanged(nameof(Ingredients));
+                }
+                else
+                {
+                    DialogService.ShowConfirmationDialog($"{temptIng.Name} already existed", "error");
                 }
             }
         }
@@ -155,8 +157,8 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             bool result = DialogService.ShowQuestionDialog("Undo all inputed text", "Undo input");
             if (result)
             {
-                SelectedIngredient.Name = string.Empty;
-                SelectedIngredient.Category = string.Empty;
+                //SelectedIngredient.Name = string.Empty;
+                //SelectedIngredient.Category = string.Empty;
                 IngredientName = string.Empty;
                 IngredientCategory = string.Empty;
                 OnPropertyChanged(nameof(SelectedIngredient));
@@ -165,8 +167,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         private void ClearInputedFields()
         {
-            //SelectedIngredient.Name = string.Empty;
-            //SelectedIngredient.Category = string.Empty;
+            
             IngredientName = string.Empty;
             IngredientCategory = string.Empty;
             OnPropertyChanged(nameof(SelectedIngredient));
@@ -178,15 +179,13 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             {
                 var db = new IngredientDataAccess();
                 Ingredients = new ObservableCollection<Ingredient>(await db.GetAllIngredientsFromDb());
-                OnPropertyChanged(nameof(Ingredients));
-                //SelectedIngredient = new Ingredient();
+                
             }
             catch (Exception e)
             {
                 DialogService.ShowConfirmationDialog($"Fel vid databas {e.Message}", "fel vid databas");
             }
         }
-
     }
 }
 
