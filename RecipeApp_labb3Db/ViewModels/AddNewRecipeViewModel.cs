@@ -8,6 +8,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 {
     internal class AddNewRecipeViewModel : ViewModelBase
     {
+        public int counter = 1;
         public RecipeDataAccess recipeDbAccess;
         public IngredientDataAccess ingredientDataAccess;
         private bool isEditingRecipe = false;
@@ -162,7 +163,6 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             EditRecipeCommand = new RelayCommand(EditRecipe, CanEditRecipe);
             LoadUnits();
             _ = LoadDataStartup();
-            _ = GetRecipes();
         }
 
         private bool CanEditRecipe(object? arg)
@@ -184,11 +184,12 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
             if (Recipes.Count == 0)
             {
-                var demoData = new JsonService();
-                var tempList = new ObservableCollection<Recipe>(demoData.LoadDemoRecipe());
-                await recipeDbAccess.CreateRecipe(tempList.FirstOrDefault());
+                
+                var getDemoRecipe = new JsonService();
+                var demoRecipe = getDemoRecipe.LoadDemoRecipe();
+                Recipes = new ObservableCollection<Recipe>(await recipeDbAccess.GetAllRecipes());
             }
-                //Recipes = new ObservableCollection<Recipe>(await recipeDbAccess.GetAllRecipes());
+
         }
         private bool CanAddIngredientToRecipe(object? arg)
         {
@@ -223,15 +224,17 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 if (ingredients.Count != 0)
                 {
                     IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
+
                 }
                 else
                 {
                     var unitService = new JsonService();
                     ingredients = unitService.LoadIngredient();
                     await ingredientDataAccess.SetAllIngredientsToDB(ingredients);
-                    IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);                   
+                    IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
+
                 }
-                //await GetRecipes();
+                
 
             }
             catch (Exception e)
@@ -243,7 +246,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         public async Task GetAllIngredients()
         {
-            
+
             IngredientsCollection = new ObservableCollection<Ingredient>(await ingredientDataAccess.GetAllIngredientsFromDb());
         }
         private void ClearRecipeInput(object obj)
@@ -271,12 +274,13 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             {
                 await recipeService.SaveRecipe(RecipeName, RecipeDescription, RecipeIngredients);
             }
-                ClearRecipeInput();
+            ClearRecipeInput();
         }
         public async Task GetAllRecipes()
         {
             Recipes = new ObservableCollection<Recipe>(await recipeDbAccess.GetAllRecipes());
             
+
         }
         private void RemoveIngredientFromRecipe(object obj)
         {

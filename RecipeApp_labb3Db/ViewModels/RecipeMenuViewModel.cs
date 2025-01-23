@@ -26,6 +26,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             SelectedRecipeView = AddNewRecipeViewModel;
             ShowCreateRecipeCommand = new RelayCommand(ShowCreateRecipeView);
             ShowRecipeListCommand = new RelayCommand(ShowRecipeListView);
+
         }
 
         private async void ShowRecipeListView(object obj)

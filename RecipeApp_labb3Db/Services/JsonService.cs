@@ -1,4 +1,5 @@
-﻿using RecipeDbAccess.Models;
+﻿using RecipeDbAccess.DataAccess;
+using RecipeDbAccess.Models;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
@@ -37,6 +38,8 @@ namespace RecipeApp_labb3Db.Presentation.Services
                 var json = File.ReadAllText(filePath);
                 var ingredients = JsonSerializer.Deserialize<List<Ingredient>>(json);
                 ingredients.ForEach(i => i.Name.ToLower());
+                
+
                 return new List<Ingredient>(ingredients);
             }
             else
@@ -45,14 +48,16 @@ namespace RecipeApp_labb3Db.Presentation.Services
             }
         }
 
-        public List<Recipe> LoadDemoRecipe()
+        public async Task LoadDemoRecipe()
         {
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources", "Recipe.json");
             if (File.Exists(filePath))
             {
                 var json = File.ReadAllText(filePath);
-                var recipe = JsonSerializer.Deserialize<List<Recipe>>(json);
-                return new List<Recipe>(recipe);
+                var recipe = JsonSerializer.Deserialize<Recipe>(json);
+                var recipeDataAccess = new RecipeDataAccess();
+                await recipeDataAccess.CreateRecipe(recipe);
+                
             }
             else
             {

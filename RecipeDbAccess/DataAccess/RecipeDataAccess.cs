@@ -40,7 +40,7 @@ namespace RecipeDbAccess.DataAccess
                 var recipesCollection = ConnectToMongo<Recipe>(RecipeCollection);
                 var result = await recipesCollection.FindAsync(_ => true);
                 var recipes = await result.ToListAsync();
-                return recipes;
+                return new List<Recipe>(recipes);
             }
             catch (Exception e)
             {
