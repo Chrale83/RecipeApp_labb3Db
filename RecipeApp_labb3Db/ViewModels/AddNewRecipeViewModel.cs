@@ -162,6 +162,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             EditRecipeCommand = new RelayCommand(EditRecipe, CanEditRecipe);
             LoadUnits();
             _ = LoadDataStartup();
+            _ = GetRecipes();
         }
 
         private bool CanEditRecipe(object? arg)
@@ -180,6 +181,14 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
         public async Task GetRecipes()
         {
             Recipes = new ObservableCollection<Recipe>(await recipeDbAccess.GetAllRecipes());
+
+            if (Recipes.Count == 0)
+            {
+                var demoData = new JsonService();
+                var tempList = new ObservableCollection<Recipe>(demoData.LoadDemoRecipe());
+                await recipeDbAccess.CreateRecipe(tempList.FirstOrDefault());
+            }
+                //Recipes = new ObservableCollection<Recipe>(await recipeDbAccess.GetAllRecipes());
         }
         private bool CanAddIngredientToRecipe(object? arg)
         {
@@ -220,10 +229,9 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                     var unitService = new JsonService();
                     ingredients = unitService.LoadIngredient();
                     await ingredientDataAccess.SetAllIngredientsToDB(ingredients);
-                    IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
-                    //OnPropertyChanged(nameof(IngredientsCollection));
+                    IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);                   
                 }
-                await GetRecipes();
+                //await GetRecipes();
 
             }
             catch (Exception e)

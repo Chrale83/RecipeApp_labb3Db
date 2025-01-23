@@ -67,13 +67,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
                 Recipes = new ObservableCollection<Recipe>(await RecipeDataAccess.GetAllRecipes());
                 
-                if (Recipes.Count == 0)
-                {
-                    var demoData = new JsonService();
-                    Recipes = new ObservableCollection<Recipe>(demoData.LoadDemoRecipe());
-                    await RecipeDataAccess.CreateRecipe(Recipes.FirstOrDefault());
-                    await RecipeDataAccess.GetAllRecipes();
-                }
+                
             }
             catch (Exception e)
             {
