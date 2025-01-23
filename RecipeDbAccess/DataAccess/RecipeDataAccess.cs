@@ -21,7 +21,13 @@ namespace RecipeDbAccess.DataAccess
                 throw new Exception("programmet kom inte åt databaseb", e);
             }
         }
+        public async Task UpdateRecipe(Recipe recipe)
+        {
+            var recipeCollection = ConnectToMongo<Recipe>(RecipeCollection);
+            var filter = Builders<Recipe>.Filter.Eq(r => r.Id, recipe.Id);
+            await recipeCollection.ReplaceOneAsync(filter, recipe);
 
+        }
         public async Task DeleteRecipeFromDb(Recipe recipe)
         {
             var recipeCollection = ConnectToMongo<Recipe>(RecipeCollection);

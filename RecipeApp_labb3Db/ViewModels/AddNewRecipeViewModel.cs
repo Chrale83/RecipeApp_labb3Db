@@ -10,6 +10,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
     {
         public RecipeDataAccess recipeDbAccess;
         public IngredientDataAccess ingredientDataAccess;
+        private bool isEditingRecipe = false;
 
         public RecipeService recipeService;
 
@@ -137,6 +138,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             {
                 _selectedRecipe = value;
                 OnPropertyChanged();
+                EditRecipeCommand.RaiseCanExectueChanged();
             }
         }
 
@@ -157,13 +159,19 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             AddIngredientToRecipeCommand = new RelayCommand(AddIngredientToRecipe, CanAddIngredientToRecipe);
             RemoveIngredientFromRecipeCommand = new RelayCommand(RemoveIngredientFromRecipe);
             ClearRecipeInputCommand = new RelayCommand(ClearRecipeInput);
-            EditRecipeCommand = new RelayCommand(EditRecipe);
+            EditRecipeCommand = new RelayCommand(EditRecipe, CanEditRecipe);
             loadUnits();
             _ = LoadDataStartup();
         }
 
+        private bool CanEditRecipe(object? arg)
+        {
+            return SelectedRecipe != null;
+        }
+
         private void EditRecipe(object obj)
         {
+            isEditingRecipe = true;
             RecipeName = SelectedRecipe.Name;
             RecipeDescription = SelectedRecipe.Description;
             RecipeIngredients = new ObservableCollection<Ingredient>(SelectedRecipe.Ingredients);
@@ -215,7 +223,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                     IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
                     //OnPropertyChanged(nameof(IngredientsCollection));
                 }
-                    await GetRecipes();
+                await GetRecipes();
 
             }
             catch (Exception e)
@@ -234,6 +242,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             bool ConfirmUndo = DialogService.ShowQuestionDialog("You want to clear all inputed information", "Confirm");
             if (ConfirmUndo)
             {
+                isEditingRecipe = false;
                 ClearRecipeInput();
                 ClearIngredientInput();
             }
@@ -241,12 +250,19 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         private async void SaveRecipe(object obj)
         {
-            bool confirmSave = DialogService.ShowQuestionDialog("Do you want to save the recipe?", "Confirm");
-            if (confirmSave)
+            if (isEditingRecipe)
+            {
+                bool confirmEdit = DialogService.ShowQuestionDialog("Do you want to update the recipe?", "Confirm");
+                if (confirmEdit)
+                {
+                    await recipeService.UpdateRecipe(RecipeName, RecipeDescription, RecipeIngredients, SelectedRecipe.Id);
+                }
+            }
+            else
             {
                 await recipeService.SaveRecipe(RecipeName, RecipeDescription, RecipeIngredients);
-                ClearRecipeInput();
             }
+                ClearRecipeInput();
         }
 
         private void RemoveIngredientFromRecipe(object obj)

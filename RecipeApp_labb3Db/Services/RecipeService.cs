@@ -1,4 +1,5 @@
-﻿using RecipeDbAccess.DataAccess;
+﻿using MongoDB.Bson;
+using RecipeDbAccess.DataAccess;
 using RecipeDbAccess.Models;
 using System.Collections.ObjectModel;
 
@@ -8,18 +9,31 @@ namespace RecipeApp_labb3Db.Presentation.Services
     {
         private readonly RecipeDataAccess recipeDbAccess = new();
 
-        public async Task SaveRecipe(string recipeName, string recipeDescription, ObservableCollection<Ingredient> recipeIngredient)
+        public async Task SaveRecipe(string recipeName, string recipeDescription, ObservableCollection<Ingredient> recipeIngredients)
         {
+            
+                var recipe = new Recipe
+                {
+                    
+                    Name = recipeName,
+                    Description = recipeDescription,
+                    Ingredients = recipeIngredients.ToList()
+                };
+                await recipeDbAccess.CreateRecipe(recipe);
+           
 
+        }
+
+        public async Task UpdateRecipe(string recipeName, string recipeDescription, ObservableCollection<Ingredient> recipeIngredients, ObjectId id)
+        {
             var recipe = new Recipe
             {
+                Id = id,
                 Name = recipeName,
                 Description = recipeDescription,
-                Ingredients = recipeIngredient.ToList()
-
+                Ingredients = recipeIngredients.ToList()
             };
-
-            await recipeDbAccess.CreateRecipe(recipe);
+            await recipeDbAccess.UpdateRecipe(recipe);
         }
 
         public Ingredient AddIngredientToRecipe(string ingredientName, string IngredientCategory, string unitName, double amount)
@@ -41,9 +55,9 @@ namespace RecipeApp_labb3Db.Presentation.Services
 
         }
 
-        
 
-        
+
+
 
 
     }
