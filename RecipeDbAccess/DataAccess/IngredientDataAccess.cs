@@ -50,7 +50,7 @@ namespace RecipeDbAccess.DataAccess
             {
                 var allIngredients = ConnectToMongo<Ingredient>(IngredientCollection);
 
-                bool exists = await allIngredients.Find(i => i.Name == selectedIngredient.Name).AnyAsync();
+                bool exists = await allIngredients.Find(i => i.Name.ToLower() == selectedIngredient.Name.ToLower()).AnyAsync();
 
                 if (!exists)
                 {

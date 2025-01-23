@@ -264,7 +264,11 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             }
                 ClearRecipeInput();
         }
-
+        public async Task GetAllRecipes()
+        {
+            Recipes = new ObservableCollection<Recipe>(await recipeDbAccess.GetAllRecipes());
+            
+        }
         private void RemoveIngredientFromRecipe(object obj)
         {
             if (RecipeIngredients != null)

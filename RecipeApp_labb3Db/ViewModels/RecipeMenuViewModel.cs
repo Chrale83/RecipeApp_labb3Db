@@ -34,9 +34,9 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             SelectedRecipeView = RecipeListViewModel;
         }
 
-        private void showCreateRecipeView(object obj)
+        private async void showCreateRecipeView(object obj)
         {
-            
+            await AddNewRecipeViewModel.GetAllRecipes();
             SelectedRecipeView = AddNewRecipeViewModel;
         }
 
