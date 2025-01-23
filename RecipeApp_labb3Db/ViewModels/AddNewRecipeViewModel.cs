@@ -52,9 +52,9 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             }
         }
 
-        private ObservableCollection<Ingredient> _ingredientsCollection;
+        private ObservableCollection<Ingredient>? _ingredientsCollection;
 
-        public ObservableCollection<Ingredient> IngredientsCollection
+        public ObservableCollection<Ingredient>? IngredientsCollection
         {
             get => _ingredientsCollection;
             set
@@ -66,7 +66,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         private Ingredient _selectedIngredient;
 
-        public Ingredient SelectedIngredient
+        public Ingredient? SelectedIngredient
         {
             get => _selectedIngredient;
             set
@@ -160,7 +160,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             RemoveIngredientFromRecipeCommand = new RelayCommand(RemoveIngredientFromRecipe);
             ClearRecipeInputCommand = new RelayCommand(ClearRecipeInput);
             EditRecipeCommand = new RelayCommand(EditRecipe, CanEditRecipe);
-            loadUnits();
+            LoadUnits();
             _ = LoadDataStartup();
         }
 
@@ -198,7 +198,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             return isNameEmpty && isDescriptionEmpty && isIngredientlistEmpty;
         }
 
-        private void loadUnits()
+        private void LoadUnits()
         {
             var unitService = new JsonService();
             var result = unitService.LoadUnits();
@@ -235,6 +235,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         public async Task GetAllIngredients()
         {
+            
             IngredientsCollection = new ObservableCollection<Ingredient>(await ingredientDataAccess.GetAllIngredientsFromDb());
         }
         private void ClearRecipeInput(object obj)

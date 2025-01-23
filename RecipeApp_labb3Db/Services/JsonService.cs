@@ -36,6 +36,7 @@ namespace RecipeApp_labb3Db.Presentation.Services
             {
                 var json = File.ReadAllText(filePath);
                 var ingredients = JsonSerializer.Deserialize<List<Ingredient>>(json);
+                ingredients.ForEach(i => i.Name.ToLower());
                 return new List<Ingredient>(ingredients);
             }
             else

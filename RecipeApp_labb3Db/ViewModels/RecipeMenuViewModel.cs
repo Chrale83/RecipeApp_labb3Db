@@ -24,7 +24,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             AddNewRecipeViewModel = new AddNewRecipeViewModel();
             RecipeListViewModel = new RecipeListViewModel();
             SelectedRecipeView = AddNewRecipeViewModel;
-            ShowCreateRecipeCommand = new RelayCommand(showCreateRecipeView);
+            ShowCreateRecipeCommand = new RelayCommand(ShowCreateRecipeView);
             ShowRecipeListCommand = new RelayCommand(ShowRecipeListView);
         }
 
@@ -34,7 +34,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             SelectedRecipeView = RecipeListViewModel;
         }
 
-        private async void showCreateRecipeView(object obj)
+        private async void ShowCreateRecipeView(object obj)
         {
             await AddNewRecipeViewModel.GetAllRecipes();
             SelectedRecipeView = AddNewRecipeViewModel;
