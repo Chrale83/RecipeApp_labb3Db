@@ -9,6 +9,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
     internal class AddNewRecipeViewModel : ViewModelBase
     {
         public RecipeDataAccess recipeDbAccess;
+        public IngredientDataAccess ingredientDataAccess;
 
         public RecipeService recipeService;
 
@@ -58,6 +59,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             set
             {
                 _ingredientsCollection = value;
+                OnPropertyChanged();
             }
         }
 
@@ -113,10 +115,37 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 AddIngredientToRecipeCommand.RaiseCanExectueChanged();
             }
         }
+
+        private ObservableCollection<Recipe> _recipes;
+
+        public ObservableCollection<Recipe> Recipes
+        {
+            get => _recipes;
+            set
+            {
+                _recipes = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Recipe _selectedRecipe;
+
+        public Recipe SelectedRecipe
+        {
+            get { return _selectedRecipe; }
+            set
+            {
+                _selectedRecipe = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public RelayCommand AddIngredientToRecipeCommand { get; init; }
         public RelayCommand RemoveIngredientFromRecipeCommand { get; init; }
         public RelayCommand SaveRecipeCommand { get; init; }
         public RelayCommand ClearRecipeInputCommand { get; init; }
+        public RelayCommand EditRecipeCommand { get; }
 
         public AddNewRecipeViewModel()
         {
@@ -128,10 +157,22 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             AddIngredientToRecipeCommand = new RelayCommand(AddIngredientToRecipe, CanAddIngredientToRecipe);
             RemoveIngredientFromRecipeCommand = new RelayCommand(RemoveIngredientFromRecipe);
             ClearRecipeInputCommand = new RelayCommand(ClearRecipeInput);
+            EditRecipeCommand = new RelayCommand(EditRecipe);
             loadUnits();
             _ = LoadDataStartup();
         }
 
+        private void EditRecipe(object obj)
+        {
+            RecipeName = SelectedRecipe.Name;
+            RecipeDescription = SelectedRecipe.Description;
+            RecipeIngredients = new ObservableCollection<Ingredient>(SelectedRecipe.Ingredients);
+        }
+
+        public async Task GetRecipes()
+        {
+            Recipes = new ObservableCollection<Recipe>(await recipeDbAccess.GetAllRecipes());
+        }
         private bool CanAddIngredientToRecipe(object? arg)
         {
             bool isIngredientSelected = SelectedIngredient != null;
@@ -156,7 +197,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             Units = new ObservableCollection<Unit>(result);
         }
 
-        public IngredientDataAccess ingredientDataAccess;
+
         private async Task LoadDataStartup()
         {
             try
@@ -172,8 +213,9 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                     ingredients = unitService.LoadIngredient();
                     await ingredientDataAccess.SetAllIngredientsToDB(ingredients);
                     IngredientsCollection = new ObservableCollection<Ingredient>(ingredients);
-                    OnPropertyChanged(nameof(IngredientsCollection));
+                    //OnPropertyChanged(nameof(IngredientsCollection));
                 }
+                    await GetRecipes();
 
             }
             catch (Exception e)
@@ -185,7 +227,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 
         public async Task GetAllIngredients()
         {
-            IngredientsCollection = new ObservableCollection<Ingredient>( await ingredientDataAccess.GetAllIngredientsFromDb());
+            IngredientsCollection = new ObservableCollection<Ingredient>(await ingredientDataAccess.GetAllIngredientsFromDb());
         }
         private void ClearRecipeInput(object obj)
         {
@@ -232,7 +274,6 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
             RecipeName = string.Empty;
             RecipeDescription = string.Empty;
             RecipeIngredients = new ObservableCollection<Ingredient>();
-            //OnPropertyChanged(nameof(RecipeDescription));
         }
 
         private void ClearIngredientInput()

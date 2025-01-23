@@ -15,6 +15,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="1" 
@@ -147,5 +148,30 @@
                     Margin="0,4,0,0" Width="80" 
                     HorizontalAlignment="Left"/>
         </StackPanel>
+
+        <ListView Margin="5,2,5,10" Grid.Row="1" Grid.Column="2"
+                  Height="188"
+          ItemsSource="{Binding Recipes}" 
+          SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"
+          HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Background="DarkGray"/>
+                        
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Grid.Row="2" Grid.Column="2" 
+                Height="30" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Center"
+                Command="{Binding EditRecipeCommand}">
+            <Button.Content>
+                <TextBlock Text="Edit Selected recipe"/>
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>

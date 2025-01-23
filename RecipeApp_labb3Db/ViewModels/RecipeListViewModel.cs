@@ -8,7 +8,7 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
 {
     internal class RecipeListViewModel : ViewModelBase
     {
-        private RecipeDataAccess? RecipeDataAccess;
+        private readonly RecipeDataAccess? RecipeDataAccess;
         private ObservableCollection<Recipe>? _recipes;
 
         public ObservableCollection<Recipe>? Recipes
@@ -71,8 +71,8 @@ namespace RecipeApp_labb3Db.Presentation.ViewModels
                 {
                     var demoData = new JsonService();
                     Recipes = new ObservableCollection<Recipe>(demoData.LoadDemoRecipe());
-                    RecipeDataAccess.CreateRecipe(Recipes.FirstOrDefault());
-                    RecipeDataAccess.GetAllRecipes();
+                    await RecipeDataAccess.CreateRecipe(Recipes.FirstOrDefault());
+                    await RecipeDataAccess.GetAllRecipes();
                 }
             }
             catch (Exception e)
